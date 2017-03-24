@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static '/css/styles.css' %}" />
+        <title>WishLists</title>
+    </head>
+    <body>
+        {% if messages %}
+       <ul class="messages">
+           {% for message in messages %}
+           <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+           {% endfor %}
+       </ul>
+       {% endif %}
+        <div id="coursesTable">
+            <h4>User#{{request.session.user}} is logged in</h4>
+            <h4>Your Wish List:</h4>
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Added By</th>
+                    <th>Date Added</th>
+                    <th>Action</th>
+                </tr>
+                {% for wish in wishlist %}
+                    <tr>
+                        <td><a href="{%url 'main:show' id=wish.id %}">{{wish.name}}</a></td>
+                        <td>{{wish.creator.first_name}}</td>
+                        <td>{{wish.created_at}}</td>
+                        {% if wish.creator.id == request.session.user %}
+                             <td><a href="{%url 'main:delete' id=wish.id %}">Delete</a><td>
+                        {% else %}
+                            <td><a href="{%url 'main:remove' id=wish.id %}">Remove from my Wishlist</a></td>
+                        {% endif %}
+                    </tr>
+    			{% endfor %}
+            </table>
+            <h4>Other Users' Wish List:</h4>
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Added By</th>
+                    <th>Date Added</th>
+                    <th>Action</th>
+                </tr>
+                {% for wish in othersWishlist %}
+                    <tr>
+                        <td>{{wish.name}}</td>
+                        <td>{{wish.creator.first_name}}</td>
+                        <td>{{wish.created_at}}</td>
+                        <td><a href="{%url 'main:add' id=wish.id %}">Add to my Wishlist</a></td>
+                    </tr>
+    			{% endfor %}
+            </table>
+            <a href="{%url 'main:new' id=request.session.user %}">Add item</a>
+            <a href="{%url 'login:logout' %}">Logout</a>
+        </div>
+    </body>
+</html>

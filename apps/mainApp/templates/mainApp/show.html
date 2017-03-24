@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <h2>{{item.name}}</h2>
+            <p><i>Users who added this item under their wishlist:</i></p>
+            {% for user in users%}
+                <p>{{user.first_name}}</p>
+            {% endfor%}
+        <a href="{%url 'main:index' id=request.session.user %}">Home</a>
+        <a href="{%url 'login:logout' %}">Logout</a>
+        </form>
+    </body>
+</html>
